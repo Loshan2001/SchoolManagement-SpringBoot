@@ -24,6 +24,9 @@ public class UserService {
 
     public User register(User user){
         user.setPassword(encoder.encode(user.getPassword()));
+        if (user.getRole() == null) {
+            user.setRole(Role.STUDENT); // or whatever default you want
+        }
         return repository.save(user);
     };
 
