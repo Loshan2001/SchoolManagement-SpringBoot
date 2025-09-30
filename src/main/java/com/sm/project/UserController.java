@@ -1,0 +1,45 @@
+package com.sm.project;
+
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+public class UserController {
+
+    @Autowired
+    private UserService service;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @PostMapping("/register")
+    public User register(@RequestBody User user){
+        return service.register(user);
+    }
+
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user){
+        return service.verify(user);
+    }
+
+    @GetMapping("/users")
+    public List<User> getUsers(){
+        return userRepository.findAll();
+    }
+
+    @GetMapping("/csrf-token")
+    public CsrfToken getCsrfToken(HttpServletRequest request){
+        return (CsrfToken) request.getAttribute("_csrf");
+    }
+
+    @PostMapping("/users")
+    public User addUser(@RequestBody User user){
+        return userRepository.save(user);
+    }
+
+}
