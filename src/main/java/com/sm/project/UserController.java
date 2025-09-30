@@ -44,4 +44,18 @@ public class UserController {
         return userRepository.save(user);
     }
 
+    // Update self (authenticated user)
+    @PutMapping("/user/{id}")
+    public User updateUser(@PathVariable int id, @RequestBody User userDetails){
+        return service.updateUser(id, userDetails);
+    }
+
+    // Delete user (admin only)
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteUser(@PathVariable int id){
+        userRepository.deleteById(id);
+        return "User deleted successfully";
+    }
+
 }

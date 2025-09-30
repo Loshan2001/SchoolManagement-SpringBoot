@@ -24,6 +24,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ACTIVE; // default status
+
     // Getters & Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -43,6 +46,9 @@ public class User {
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }
 
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+
     @Override
     public String toString() {
         return "User{" +
@@ -51,6 +57,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", fullname='" + fullname + '\'' +
                 ", role=" + role +
+                ", status=" + status +
                 '}';
     }
 }

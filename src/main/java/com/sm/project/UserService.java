@@ -41,4 +41,22 @@ public class UserService {
             return "failed";
         }
     }
+
+    public User updateUser(int id, User userDetails){
+        User existingUser = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Only update allowed fields
+        existingUser.setUsername(userDetails.getUsername());
+        existingUser.setEmail(userDetails.getEmail());
+        existingUser.setFullname(userDetails.getFullname());
+        if(userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()){
+            existingUser.setPassword(encoder.encode(userDetails.getPassword()));
+        }
+        if(userDetails.getStatus() != null){
+            existingUser.setStatus(userDetails.getStatus());
+        }
+        return repository.save(existingUser);
+    }
+
 }
