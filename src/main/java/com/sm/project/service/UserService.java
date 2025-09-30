@@ -1,10 +1,13 @@
-package com.sm.project;
+package com.sm.project.service;
 
+import com.sm.project.Auth.JWTService;
+import com.sm.project.constant.Role;
+import com.sm.project.entity.User;
+import com.sm.project.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +60,11 @@ public class UserService {
             existingUser.setStatus(userDetails.getStatus());
         }
         return repository.save(existingUser);
+    }
+
+    public User getById(Long id) {
+        return repository.findById(Math.toIntExact(id))
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
 }

@@ -1,5 +1,7 @@
-package com.sm.project;
+package com.sm.project.entity;
 
+import com.sm.project.constant.Role;
+import com.sm.project.constant.Status;
 import jakarta.persistence.*;
 
 @Entity

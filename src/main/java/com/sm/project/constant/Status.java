@@ -1,4 +1,4 @@
-package com.sm.project;
+package com.sm.project.constant;
 
 public enum Status {
     ACTIVE,

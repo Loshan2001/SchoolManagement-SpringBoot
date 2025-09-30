@@ -1,5 +1,7 @@
-package com.sm.project;
+package com.sm.project.Auth;
 
+import com.sm.project.dao.UserRepository;
+import com.sm.project.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

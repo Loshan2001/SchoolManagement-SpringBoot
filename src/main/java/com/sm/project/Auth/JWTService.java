@@ -1,4 +1,4 @@
-package com.sm.project;
+package com.sm.project.Auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -36,7 +36,7 @@ public class JWTService {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000 * 30)) // 30 hours
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000 * 30))
                 .signWith(getKey())
                 .compact();
     }
