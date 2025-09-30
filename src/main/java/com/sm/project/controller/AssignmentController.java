@@ -21,9 +21,9 @@ public class AssignmentController {
     public ResponseEntity<?> createAssignment(@RequestBody Assignment assignment) {
         try {
             Assignment saved = service.createAssignment(assignment);
-            return ResponseEntity.ok("✅ Assignment created successfully! ID: " + saved.getId());
+            return ResponseEntity.ok(" Assignment created successfully! ID: " + saved.getId());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("❌ Failed to create assignment: " + e.getMessage());
+            return ResponseEntity.badRequest().body(" Failed to create assignment: " + e.getMessage());
         }
     }
 
@@ -32,7 +32,7 @@ public class AssignmentController {
     public ResponseEntity<?> getAllAssignments() {
         List<Assignment> assignments = service.getAllAssignments();
         if (assignments.isEmpty()) {
-            return ResponseEntity.ok("⚠️ No assignments found");
+            return ResponseEntity.ok(" No assignments found");
         }
         return ResponseEntity.ok(assignments);
     }
@@ -43,7 +43,7 @@ public class AssignmentController {
         return service.getAssignmentById(id)
                 .<ResponseEntity<?>>map(ResponseEntity::ok)  // force it to ResponseEntity<?>
                 .orElseGet(() -> ResponseEntity.badRequest()
-                        .body("❌ Assignment not found with ID: " + id));
+                        .body("Assignment not found with ID: " + id));
     }
 
 
@@ -52,9 +52,9 @@ public class AssignmentController {
     public ResponseEntity<?> updateAssignment(@PathVariable Long id, @RequestBody Assignment assignment) {
         try {
             Assignment updated = service.updateAssignment(id, assignment);
-            return ResponseEntity.ok("✅ Assignment updated successfully! ID: " + updated.getId());
+            return ResponseEntity.ok(" Assignment updated successfully! ID: " + updated.getId());
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body("❌ Failed to update: " + e.getMessage());
+            return ResponseEntity.badRequest().body(" Failed to update: " + e.getMessage());
         }
     }
 
@@ -63,9 +63,9 @@ public class AssignmentController {
     public ResponseEntity<?> deleteAssignment(@PathVariable Long id) {
         try {
             service.deleteAssignment(id);
-            return ResponseEntity.ok("✅ Assignment deleted successfully! ID: " + id);
+            return ResponseEntity.ok(" Assignment deleted successfully! ID: " + id);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("❌ Failed to delete assignment: " + e.getMessage());
+            return ResponseEntity.badRequest().body(" Failed to delete assignment: " + e.getMessage());
         }
     }
 }

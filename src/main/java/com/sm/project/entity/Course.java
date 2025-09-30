@@ -1,6 +1,5 @@
 package com.sm.project.entity;
 
-import com.sm.project.entity.User;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +23,14 @@ public class Course {
     )
     private Set<User> teachers = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "course_students",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private Set<User> students = new HashSet<>();
+
     // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -36,4 +43,7 @@ public class Course {
 
     public Set<User> getTeachers() { return teachers; }
     public void setTeachers(Set<User> teachers) { this.teachers = teachers; }
+
+    public Set<User> getStudents() { return students; }
+    public void setStudents(Set<User> students) { this.students = students; }
 }

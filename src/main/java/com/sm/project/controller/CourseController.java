@@ -36,9 +36,9 @@ public class CourseController {
     public ResponseEntity<?> createCourse(@RequestBody Course course) {
         try {
             Course saved = courseService.createCourse(course);
-            return ResponseEntity.ok(buildResponse("success", "✅ Course created successfully", saved));
+            return ResponseEntity.ok(buildResponse("success", "Course created successfully", saved));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(buildResponse("error", "❌ Failed to create course", null));
+            return ResponseEntity.badRequest().body(buildResponse("error", " Failed to create course", null));
         }
     }
 
@@ -49,15 +49,15 @@ public class CourseController {
         if (courses.isEmpty()) {
             return ResponseEntity.ok(buildResponse("success", "No courses found", courses));
         }
-        return ResponseEntity.ok(buildResponse("success", "✅ Courses retrieved successfully", courses));
+        return ResponseEntity.ok(buildResponse("success", " Courses retrieved successfully", courses));
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getCourse(@PathVariable Long id) {
         return courseService.getCourseById(id)
-                .map(course -> ResponseEntity.ok(buildResponse("success", "✅ Course found", course)))
-                .orElseGet(() -> ResponseEntity.badRequest().body(buildResponse("error", "❌ Course not found with ID: " + id, null)));
+                .map(course -> ResponseEntity.ok(buildResponse("success", "Course found", course)))
+                .orElseGet(() -> ResponseEntity.badRequest().body(buildResponse("error", " Course not found with ID: " + id, null)));
     }
 
     @PutMapping("/{id}")
@@ -66,9 +66,9 @@ public class CourseController {
         try {
             course.setId(id);
             Course updated = courseService.updateCourse(course);
-            return ResponseEntity.ok(buildResponse("success", "✅ Course updated successfully", updated));
+            return ResponseEntity.ok(buildResponse("success", "Course updated successfully", updated));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(buildResponse("error", "❌ Failed to update course", null));
+            return ResponseEntity.badRequest().body(buildResponse("error", "Failed to update course", null));
         }
     }
 
@@ -77,9 +77,9 @@ public class CourseController {
     public ResponseEntity<?> deleteCourse(@PathVariable Long id) {
         try {
             courseService.deleteCourse(id);
-            return ResponseEntity.ok(buildResponse("success", "✅ Course deleted successfully", null));
+            return ResponseEntity.ok(buildResponse("success", "Course deleted successfully", null));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(buildResponse("error", "❌ Failed to delete course", null));
+            return ResponseEntity.badRequest().body(buildResponse("error", "Failed to delete course", null));
         }
     }
 
@@ -90,9 +90,38 @@ public class CourseController {
             Course course = courseService.getCourseById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
             User teacher = userService.getById(teacherId);
             Course updated = courseService.assignTeacher(course, teacher);
-            return ResponseEntity.ok(buildResponse("success", "✅ Teacher assigned successfully", updated));
+            return ResponseEntity.ok(buildResponse("success", "Teacher assigned successfully", updated));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(buildResponse("error", "❌ Failed to assign teacher: " + e.getMessage(), null));
+            return ResponseEntity.badRequest().body(buildResponse("error", "Failed to assign teacher: " + e.getMessage(), null));
+        }
+    }
+
+    //  Enroll a student
+    @PostMapping("/{courseId}/enroll/{studentId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public ResponseEntity<?> enrollStudent(@PathVariable Long courseId, @PathVariable Long studentId) {
+        try {
+            Course course = courseService.getCourseById(courseId)
+                    .orElseThrow(() -> new RuntimeException("Course not found"));
+            User student = userService.getById(studentId);
+            Course updated = courseService.enrollStudent(course, student);
+            return ResponseEntity.ok(buildResponse("success", " Student enrolled successfully", updated));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(buildResponse("error", " Failed to enroll student: " + e.getMessage(), null));
+        }
+    }
+
+    //  Admin can view enrolled students in a course
+    @GetMapping("/{courseId}/students")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getEnrolledStudents(@PathVariable Long courseId) {
+        try {
+            Set<User> students = courseService.getEnrolledStudents(courseId);
+            return ResponseEntity.ok(buildResponse("success", "Enrolled students retrieved", students));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(buildResponse("error", "Failed to get students: " + e.getMessage(), null));
         }
     }
 }

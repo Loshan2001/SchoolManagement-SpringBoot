@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CourseService {
@@ -38,5 +39,16 @@ public class CourseService {
     public Course assignTeacher(Course course, User teacher) {
         course.getTeachers().add(teacher);
         return repository.save(course);
+    }
+
+    public Course enrollStudent(Course course, User student) {
+        course.getStudents().add(student);
+        return repository.save(course);
+    }
+
+    public Set<User> getEnrolledStudents(Long courseId) {
+        Course course = repository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        return course.getStudents();
     }
 }
