@@ -86,7 +86,7 @@ public class UserController {
         }
     }
 
-    // ✅ Update user
+    // u Update user
     @PutMapping("/user/{id}")
     public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody User userDetails) {
         try {
@@ -106,6 +106,28 @@ public class UserController {
             return ResponseEntity.ok(buildResponse("success", " User deleted successfully", null));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(buildResponse("error", " Failed to delete user: " + e.getMessage(), null));
+        }
+    }
+
+    //  Get user by ID (anyone)
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable int id) {
+        try {
+            User user = service.getById((long) id);
+            return ResponseEntity.ok(buildResponse("success", " User found", user));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(buildResponse("error", "fail " + e.getMessage(), null));
+        }
+    }
+
+    //  Get user by username (anyone)
+    @GetMapping("/user/username/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+        try {
+            User user = service.getByUsername(username);
+            return ResponseEntity.ok(buildResponse("success", " User found", user));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(buildResponse("error", "fail " + e.getMessage(), null));
         }
     }
 }
